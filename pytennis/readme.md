@@ -36,3 +36,12 @@ Below shows, Agent B, predicting coordinate (260, 600) from its present point (1
 ### To run program follow the process below:
 
 ` pip install -r requirement.txt `
+
+Clone the work and run the main.py file using the command below
+
+``` git clone https://github.com/elishatofunmi/ReinEnv/tree/main/pytennis.git
+
+    python main.py
+    
+
+```
