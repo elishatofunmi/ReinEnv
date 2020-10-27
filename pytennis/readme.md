@@ -43,6 +43,8 @@ git clone https://github.com/elishatofunmi/ReinEnv/tree/main/pytennis
 
 pip install -r requirement.txt
 
+cd pytennis
+
 python main.py
 
 ```
