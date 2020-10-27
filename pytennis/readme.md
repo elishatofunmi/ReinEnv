@@ -20,13 +20,13 @@
 
 This uses the y = mx + c approach to forecast new ball locations
 
-Below shows, Agent A, predicting coordinate (260, 600) from its present point (100, 400)
+Below shows, Agent A, predicting coordinate (x1, y1) - (300, 100) from its present point (x2, y2)-(450, 600)
 
 
 ![images](images/tagplotA.png)
 
 
-Below shows, Agent B, predicting coordinate (260, 600) from its present point (100, 400)
+Below shows, Agent B, predicting coordinate (x1, y1) - (200, 600) from its present point (x2, y2) - (214, 100)
 
 
 ![images](images/tagplotB.png)
@@ -36,7 +36,7 @@ Below shows, Agent B, predicting coordinate (260, 600) from its present point (1
 ### To run program follow the process below:
 
 
-Clone the work and run the main.py file using the command below
+Clone the work and run the main.py file using the following commands below
 
 ``` 
 git clone https://github.com/elishatofunmi/ReinEnv/tree/main/pytennis
