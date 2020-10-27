@@ -2,4 +2,4 @@
 
 ### An RL environment built using pygame
 
-![images](images/table.jpg)
+![images](images/tennis.jpg)
