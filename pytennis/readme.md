@@ -2,7 +2,8 @@
 
 ### An RL environment built using pygame
 
-![images](https://youtu.be/iUYxZ2tYKHw)
+
+[![Watch on youtube](https://img.youtube.com/vi/_0C1hfZpQo0/hqdefault.jpg)](https://youtu.be/iUYxZ2tYKHw)
 
 ------------------------------------------------------------------------------------------------------------------
 
