@@ -40,7 +40,7 @@ Below shows, Agent B, predicting coordinate (260, 600) from its present point (1
 Clone the work and run the main.py file using the command below
 
 ``` 
-git clone https://github.com/elishatofunmi/ReinEnv/tree/main/pytennis.git
+git clone https://github.com/elishatofunmi/ReinEnv/tree/main/pytennis
 
 python main.py
 
