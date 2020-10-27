@@ -23,13 +23,13 @@ This uses the y = mx + c approach to forecast new ball locations
 Below shows, Agent A, predicting coordinate (260, 600) from its present point (100, 400)
 
 
-![images](images/tag plot A.png)
+![images](images/tagplotA.png)
 
 
 Below shows, Agent B, predicting coordinate (260, 600) from its present point (100, 400)
 
 
-![images](images/tag plot B.png)
+![images](images/tagplotB.png)
 
 
 
