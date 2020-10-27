@@ -1,2 +1,3 @@
 # ReinEnv
-A collection of Reinforcement Learning Environment
+
+A collection of Reinforcement Learning Environment built using pygame
