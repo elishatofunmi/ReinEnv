@@ -6,7 +6,6 @@
 ![gif](images/ezgif.com-video-to-gif.gif)
 
 
-Watch on youtube below.
 
  [Watch on youtube here](https://youtu.be/iUYxZ2tYKHw)
 
