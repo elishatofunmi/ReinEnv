@@ -1,1 +1,3 @@
-Reinforcement Learning based environment for football analytics built with pygame.
+# A reinforcement learning based football game - Discrete mathematics approach
+
+This is an exploration of reinforcement Learning based environment for football analytics built with pygame.
