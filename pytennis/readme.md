@@ -2,16 +2,13 @@
 
 ### An RL environment built using pygame
 
-![images](images/tennis.jpeg)
-
 
 ![gif](images/ezgif.com-video-to-gif.gif)
 
 
 Watch on youtube below.
 
-
-[![Watch on youtube](https://i9.ytimg.com/vi/iUYxZ2tYKHw/mq1.jpg?sqp=CLTj4fwF&rs=AOn4CLBSswX-5oAWqJYUeYc7x2XQFE5OAQ)](https://youtu.be/iUYxZ2tYKHw)
+ [![Watch on youtube here]](https://youtu.be/iUYxZ2tYKHw)
 
 ------------------------------------------------------------------------------------------------------------------
 
