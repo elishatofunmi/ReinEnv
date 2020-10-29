@@ -1,9 +1,36 @@
 import numpy as np
+from PlayersProperties import *
 
 
 class network:
 
     def __init__(self):
+        self.playersList = [
+            # players A1 - A10
+            'playerAKeeper',
+            'playerA1',
+            'playerA2',
+            'playerA3',
+            'playerA4',
+            'playerA5',
+            'playerA6',
+            'playerA7',
+            'playerA8',
+            'playerA9',
+            'playerA10',
+            # players B1 - B10
+            'playerBKeeper',
+            'playerB1',
+            'playerB2',
+            'playerB3',
+            'playerB4',
+            'playerB5',
+            'playerB6',
+            'playerB7',
+            'playerB8',
+            'playerB9',
+            'playerB10',
+        ]
         return
 
     def sortdata(self, dictData):
@@ -18,7 +45,8 @@ class network:
 
         return sortedKeys
 
-    def LikePairsNearestNeighbor(self, sourcePlayerCoordinate, SourcedictDataX, SourcedicDataY, milestone='short', conditionedValue = 30):
+    def LikePairsNearestNeighbor(self, playername, sourcePlayerCoordinate, SourcedictDataX, SourcedicDataY,
+                                 milestone='short', conditionedValue=30):
         """
         dictDataX contains players of source team their respective coordinates, excluding the source player.
 
@@ -35,7 +63,7 @@ class network:
 
         """
         status = True
-        #status is for the program to keep finding feasible team player that can hold the ball to the post.
+        # status is for the program to keep finding feasible team player that can hold the ball to the post.
         while status:
             playersDistanceEstimate = {}
             players = SourcedictDataX.keys()
@@ -155,54 +183,87 @@ class network:
 
             # determine if the receiving player is free within a space of 30 to hold the ball.
             # note that the enemy if within the space of 3, will automatically receive the ball.
-            playersB = SourcedicDataY.keys()
-            
 
-            # compute the distance between the target player and the opposing teams around.
-            distanceD = {}
-            selectedPlayerCoordinate = SourcedictDataX[targetplayer]
-            for playee in playersB:
-                # calculate distance
-                xvalue = SourcedicDataY[playee][0] - selectedPlayerCoordinate[0]
-                yvalue = SourcedicDataY[playee][1] - selectedPlayerCoordinate[1]
-                xdiff = np.abs(xvalue)
-                ydiff = np.abs(yvalue)
-                distance = np.sqrt(pow(xdiff, 2) + pow(ydiff, 2))
-                distanceD[playee] = distance
+            if targetplayer != 'self':
+                playersB = SourcedicDataY.keys()
 
-            sortKeysB = self.sortdata(distanceD)
-            if SourcedicDataY[sortKeysB[0]] > conditionedValue:
+                # compute the distance between the target player and the opposing teams around.
+                distanceD = {}
+                selectedPlayerCoordinate = SourcedictDataX[targetplayer]
+                for playee in playersB:
+                    # calculate distance
+                    xvalue = SourcedicDataY[playee][0] - \
+                        selectedPlayerCoordinate[0]
+                    yvalue = SourcedicDataY[playee][1] - \
+                        selectedPlayerCoordinate[1]
+                    xdiff = np.abs(xvalue)
+                    ydiff = np.abs(yvalue)
+                    distance = np.sqrt(pow(xdiff, 2) + pow(ydiff, 2))
+                    distanceD[playee] = distance
+
+                sortKeysB = self.sortdata(distanceD)
+                if SourcedicDataY[sortKeysB[0]] > conditionedValue:
+                    status = False
+                    break
+                else:
+                    status = True
+                    SourcedictDataX.pop(targetplayer)
+                    # Delete selected target player from list to prevent getting selected the second time.
+            else:
+                targetplayer = 'self'
                 status = False
                 break
-            else:
-                status = True
-                
-                #Delete selected target player from list to prevent getting selected the second time.
-                
-        
-
 
         return targetplayer
 
-    def updateposition(self, sourcePlayerCoordinate, SourcedictDataX, SourcedicDataY, milestone='short'):
+    def updateposition(self, playername, sourcePlayerCoordinate, SourcedictDataX, SourcedicDataY,
+                       milestone='short', conditionedValue=30):
         """
         proposes a new team player to pass the ball too within the same team.
         This decides if ball should remain with self or can be passed to another player of the same team, either by
         long pass, short pass, across or randomly decide (long, short or across)
         """
         nextplayer = self.LikePairsNearestNeighbor(
-            sourcePlayerCoordinate, SourcedictDataX, SourcedicDataY, milestone='short')
+            playername, sourcePlayerCoordinate, SourcedictDataX, SourcedicDataY,
+            milestone='short', conditionedValue=30)
+
+        # determine a new coordinate away from the enemey
+        # draw close to your team member.
+        playersDistanceEstimate = {}
+        players = SourcedictDataX.keys()
+
+        # compute the distance between the source players and his fellow team members
+        for playee in players:
+            # calculate distance
+            xvalue = SourcedictDataX[playee][0] - sourcePlayerCoordinate[0]
+            yvalue = SourcedictDataX[playee][1] - sourcePlayerCoordinate[1]
+            xdiff = np.abs(xvalue)
+            ydiff = np.abs(yvalue)
+            distance = np.sqrt(pow(xdiff, 2) + pow(ydiff, 2))
+            playersDistanceEstimate[playee] = distance
+
+        sortmembers = self.sortdata(playersDistanceEstimate)
+        # closest team member is
+        nextcoordinates = SourcedictDataX[sortmembers[0]]
+        nextLocation = self.linearRegression(
+            sourcePlayerCoordinate[0], sourcePlayerCoordinate[1], nextcoordinates[0], nextcoordinates[1])
+
+        # setting a new coordinate for the ball
+        bal = ball()
+        bal.positionx = nextLocation[0]
+        bal.positiony = nextLocation[1]
 
         if nextplayer == 'self':
-            # determine a new coordinate away from the enemey
-            pass
-
+            # set a new position for the just decided target player
+            self.setplayersLocation(
+                defaultPlayer=playername, coordinate=nextLocation)
         else:
             # pass the ball from the source player to the destination player
-            pass
+            self.setplayersLocation(
+                defaultPlayer=nextplayer, coordinate=nextLocation)
         return
 
-    def linearRegression(self, x1, y1, x2, y2, NumberOfMoves=5):
+    def linearRegression(self, x1, y1, x2, y2, NumberOfMoves=3):
         xmove, ymove = (0, 0)
         m = (y2 - y1) / (x2 - x1)
         c = y2 - (m * x2)
@@ -210,3 +271,97 @@ class network:
         xmove = x1 + NumberOfMoves
         ymove = (m * xmove) + c
         return xmove, ymove
+
+    def setplayersLocation(self, defaultPlayer='ball', coordinate=(350, 600)):
+        if defaultPlayer == 'PlayerA1':
+            A1 = playerA1()
+            A1.positionx = coordinate[0]
+            A1. positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA2':
+            A2 = playerA2()
+            A2.positionx = coordinate[0]
+            A2.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA3':
+            A3 = playerA3()
+            A3.positionx = coordinate[0]
+            A3.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA4':
+            A4 = playerA4()
+            A4.positionx = coordinate[0]
+            A4.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA5':
+            A5 = playerA5()
+            A5.positionx = coordinate[0]
+            A5.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA6':
+            A6 = playerA6()
+            A6.positionx = coordinate[0]
+            A6.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA7':
+            A7 = playerA7()
+            A7.positionx = coordinate[0]
+            A7.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA8':
+            A8 = playerA8()
+            A8.positionx = coordinate[0]
+            A8.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA9':
+            A9 = playerA9()
+            A9.positionx = coordinate[0]
+            A9.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerA10':
+            A10 = playerA10()
+            A10.positionx = coordinate[0]
+            A10.positiony = coordinate[1]
+        elif defaultPlayer == 'playerAKeeper':
+            keeperA = playerAKeeper()
+            keeperA.positionx = coordinate[0]
+            keeperA.positiony = coordinate[1]
+
+        # begin for B
+        elif defaultPlayer == 'PlayerB1':
+            B1 = playerB1()
+            B1.positionx = coordinate[0]
+            B1. positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB2':
+            B2 = playerB2()
+            B2.positionx = coordinate[0]
+            B2.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB3':
+            B3 = playerB3()
+            B3.positionx = coordinate[0]
+            B3.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB4':
+            B4 = playerB4()
+            B4.positionx = coordinate[0]
+            B4.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB5':
+            B5 = playerA5()
+            B5.positionx = coordinate[0]
+            B5.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB6':
+            B6 = playerB6()
+            B6.positionx = coordinate[0]
+            B6.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB7':
+            B7 = playerB7()
+            B7.positionx = coordinate[0]
+            B7.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB8':
+            B8 = playerB8()
+            B8.positionx = coordinate[0]
+            B8.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB9':
+            B9 = playerB9()
+            B9.positionx = coordinate[0]
+            B9.positiony = coordinate[1]
+        elif defaultPlayer == 'PlayerB10':
+            B10 = playerB10()
+            B10.positionx = coordinate[0]
+            B10.positiony = coordinate[1]
+        else:
+            keeperB = playerBKeeper()
+            keeperB.positionx = coordinate[0]
+            keeperB.positiony = coordinate[1]
+
+        return
