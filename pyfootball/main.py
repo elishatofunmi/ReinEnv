@@ -1,22 +1,28 @@
-import pygame, sys
+import time
+from Scripts.PlayersProperties import *
+
+import pygame
+import sys
 from pygame.locals import *
 pygame.init()
-import time
 
 FPS = 50
 fpsClock = pygame.time.Clock()
 
 # set up the window
 DISPLAYSURF = pygame.display.set_mode((1200, 700), 0, 32)
-pygame.display.set_caption('REINFORCEMENT LEARNING (Discrete Mathematics) - Football Analytics (footRein)')
+pygame.display.set_caption(
+    'REINFORCEMENT LEARNING (Discrete Mathematics) - Football Analytics (footRein)')
 # set up the colors
-BLACK = ( 0,0,0)
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-RED= (255,0,0)
-GREEN = ( 0, 255,0)
-BLUE = ( 0,0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
 # draw on the surface object
+
+
 def boarddisplay():
     DISPLAYSURF.fill(WHITE)
     pygame.draw.rect(DISPLAYSURF, GREEN, (20, 20, 1160, 660))
@@ -32,8 +38,7 @@ def boarddisplay():
     return
 
 
-
-#Define team A
+# Define team A
 TEAMA_goalkeeper = pygame.image.load('images/players/TeamAk.png')
 TEAMA_goalkeeper = pygame.transform.scale(TEAMA_goalkeeper, (30, 30))
 
@@ -68,7 +73,7 @@ TEAMA_ten = pygame.image.load('images/players/teamA10.png')
 TEAMA_ten = pygame.transform.scale(TEAMA_ten, (30, 30))
 
 
-#define team B
+# define team B
 TEAMB_goalkeeper = pygame.image.load('images/players/TeamBk.png')
 TEAMB_goalkeeper = pygame.transform.scale(TEAMB_goalkeeper, (30, 30))
 
@@ -103,8 +108,7 @@ TEAMB_ten = pygame.image.load('images/players/teamB10.png')
 TEAMB_ten = pygame.transform.scale(TEAMB_ten, (30, 30))
 
 
-
-#Define the teamA players default position
+# Define the teamA players default position
 playerakeep = (40, 330)
 playera1 = (140, 100)
 playera2 = (140, 250)
@@ -118,7 +122,7 @@ playera9 = (550, 300)
 playera10 = (550, 400)
 
 
-#Define the teamB players default position
+# Define the teamB players default position
 playerbkeep = (1130, 330)
 playerb1 = (1030, 100)
 playerb2 = (1030, 250)
@@ -132,9 +136,8 @@ playerb9 = (650, 300)
 playerb10 = (650, 400)
 
 
-
 def displayDefaultA():
-    #randomly display players A within enclosed position x, y, xwidth, ywidth
+    # randomly display players A within enclosed position x, y, xwidth, ywidth
     DISPLAYSURF.blit(TEAMA_goalkeeper, playerakeep)
     DISPLAYSURF.blit(TEAMA_one, playera1)
     DISPLAYSURF.blit(TEAMA_two, playera2)
@@ -150,7 +153,7 @@ def displayDefaultA():
 
 
 def displayDefaultB():
-    #randomly display players A within enclosed position x, y, xwidth, ywidth
+    # randomly display players A within enclosed position x, y, xwidth, ywidth
     DISPLAYSURF.blit(TEAMB_goalkeeper, playerbkeep)
     DISPLAYSURF.blit(TEAMB_one, playerb1)
     DISPLAYSURF.blit(TEAMB_two, playerb2)
@@ -171,30 +174,23 @@ count = 0
 
 
 while True:
-    #display board
+    # display board
     boarddisplay()
-    
-    #display player A
-    displayDefaultA()
-    
-    #display player B
-    displayDefaultB()
-    
-    
-    
-    
-    
-    
-    
 
+    # display player A
+    displayDefaultA()
+
+    # display player B
+    displayDefaultB()
+
+
+    
 
     pygame.display.update()
     fpsClock.tick(FPS)
-    
+
     for event in pygame.event.get():
 
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-    
-
