@@ -10,10 +10,6 @@ A collection of Reinforcement Learning Environment built using pygame
 
 ------------------------------------------------------------------------------------------------------
 
-### pyfootball - footreins
+### pyfootball 
 
-
-###### Note: footreins is work in progress
-
-
-![images](pyfootball/images/others/football_analytics.png)
+![gif](pyfootball/images/pyfootball.gif)
